@@ -2,40 +2,24 @@
 
 namespace PhpSimple\Doctrine\DBAL\Traits;
 
-use DateTime;
-use DateTimeImmutable;
+use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
-use Doctrine\DBAL\Types\Types;
-use InvalidArgumentException;
 
 trait ConvertToPHPValue
 {
     /**
      * @throws ConversionException
      */
-    private function convertToPHPValueForType($value, AbstractPlatform $platform, string $type): ?DateTimeImmutable
+    private function convertToPHPValueForType($value, AbstractPlatform $platform, string $type, DateTimeInterface $object, string $function): ?DateTimeInterface
     {
-        switch ($type) {
-            case Types::DATETIME_IMMUTABLE:
-                $class = new DateTimeImmutable();
-                $function = 'date_create_immutable';
-                break;
-            case Types::DATETIME_MUTABLE:
-                $class = new DateTime();
-                $function = 'date_create';
-                break;
-            default:
-                throw new InvalidArgumentException(message: 'Invalid value');
-        }
-
-        if (null === $value || $value instanceof $class) {
+        if (null === $value || $value instanceof $object) {
             return $value;
         }
 
         $timezone = new DateTimeZone(timezone: 'UTC');
-        $converted = $class::createFromFormat(format: $platform->getDateTimeFormatString(), datetime: $value, timezone: $timezone);
+        $converted = $object::createFromFormat(format: $platform->getDateTimeFormatString(), datetime: $value, timezone: $timezone);
 
         if (false === $converted) {
             $converted = $function(datetime: $value, timezone: $timezone);
