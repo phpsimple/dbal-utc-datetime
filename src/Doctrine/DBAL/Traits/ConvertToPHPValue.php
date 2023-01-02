@@ -12,7 +12,7 @@ trait ConvertToPHPValue
     /**
      * @throws ConversionException
      */
-    private function convertToPHPValueForType($value, AbstractPlatform $platform, string $type, DateTimeInterface $object, string $function): ?DateTimeInterface
+    private function convertToPHPValueForType($value, AbstractPlatform $platform, DateTimeInterface $object, string $function): ?DateTimeInterface
     {
         if (null === $value || $value instanceof $object) {
             return $value;
@@ -26,7 +26,7 @@ trait ConvertToPHPValue
         }
 
         if (false === $converted) {
-            throw ConversionException::conversionFailedFormat(value: $value, toType: $type, expectedFormat: $platform->getDateTimeFormatString());
+            throw ConversionException::conversionFailedFormat(value: $value, toType: $object::class, expectedFormat: $platform->getDateTimeFormatString());
         }
 
         return $converted;
