@@ -2,7 +2,7 @@ version: 2.0
 jobs:
     build:
         environment:
-            CC_TEST_REPORTER_ID: xxx
+            CC_TEST_REPORTER_ID: 99d1c1f9c51e67e64937d59a280c015b08c3fa803d28f3ddbc31c183df11a414
         docker:
             -   image: k0d3r1s/php-fpm:unstable-testing
         resource_class: small
