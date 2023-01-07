@@ -3,9 +3,9 @@
 namespace PhpSimple\Doctrine\DBAL\Traits;
 
 use DateTimeInterface;
-use DateTimeZone;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
+use PhpSimple\UTCDateTimeImmutable;
 
 trait ConvertToPHPValue
 {
@@ -18,11 +18,10 @@ trait ConvertToPHPValue
             return $value;
         }
 
-        $timezone = new DateTimeZone(timezone: 'UTC');
-        $converted = $object::createFromFormat(format: $platform->getDateTimeFormatString(), datetime: $value, timezone: $timezone);
+        $converted = $object::createFromFormat(format: $platform->getDateTimeFormatString(), datetime: $value, timezone: UTCDateTimeImmutable::getUTCTimeZone());
 
         if (false === $converted) {
-            $converted = $function(datetime: $value, timezone: $timezone);
+            $converted = $function(datetime: $value, timezone: UTCDateTimeImmutable::getUTCTimeZone());
         }
 
         if (false === $converted) {

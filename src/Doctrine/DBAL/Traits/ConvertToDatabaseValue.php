@@ -3,15 +3,15 @@
 namespace PhpSimple\Doctrine\DBAL\Traits;
 
 use DateTimeInterface;
-use DateTimeZone;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use PhpSimple\UTCDateTimeImmutable;
 
 trait ConvertToDatabaseValue
 {
     public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
     {
         if ($value instanceof DateTimeInterface) {
-            $value = $value->setTimezone(new DateTimeZone(timezone: 'UTC'));
+            $value = $value->setTimezone(UTCDateTimeImmutable::getUTCTimeZone());
         }
 
         return parent::convertToDatabaseValue(value: $value, platform: $platform);

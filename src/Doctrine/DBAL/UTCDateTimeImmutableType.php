@@ -2,10 +2,10 @@
 
 namespace PhpSimple\Doctrine\DBAL;
 
-use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\DateTimeImmutableType;
+use PhpSimple\UTCDateTimeImmutable;
 
 class UTCDateTimeImmutableType extends DateTimeImmutableType
 {
@@ -14,6 +14,6 @@ class UTCDateTimeImmutableType extends DateTimeImmutableType
 
     public function convertToPHPValue($value, AbstractPlatform $platform): ?DateTimeInterface
     {
-        return $this->convertToPHPValueForType(value: $value, platform: $platform, object: new DateTimeImmutable(), function: 'date_create_immutable');
+        return $this->convertToPHPValueForType(value: $value, platform: $platform, object: new UTCDateTimeImmutable(), function: 'date_create_immutable');
     }
 }
