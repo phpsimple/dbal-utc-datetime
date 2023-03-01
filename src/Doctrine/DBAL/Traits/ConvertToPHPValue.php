@@ -18,16 +18,16 @@ trait ConvertToPHPValue
             return $value;
         }
 
-        $converted = $object::createFromFormat(format: $platform->getDateTimeFormatString(), datetime: $value, timezone: UTCDateTimeImmutable::getUTCTimeZone());
+        $dateTime = $object::createFromFormat(
+            format: $platform->getDateTimeFormatString(),
+            datetime: $value,
+            timezone: UTCDateTimeImmutable::getUTCTimeZone(),
+        ) ?: $function(datetime: $value, timezone: UTCDateTimeImmutable::getUTCTimeZone());
 
-        if (false === $converted) {
-            $converted = $function(datetime: $value, timezone: UTCDateTimeImmutable::getUTCTimeZone());
-        }
-
-        if (false === $converted) {
+        if (false === $dateTime) {
             throw ConversionException::conversionFailedFormat(value: $value, toType: $object::class, expectedFormat: $platform->getDateTimeFormatString());
         }
 
-        return $converted;
+        return $dateTime;
     }
 }
