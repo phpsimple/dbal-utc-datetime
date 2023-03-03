@@ -11,7 +11,7 @@ trait ConvertToDatabaseValue
     public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
     {
         if ($value instanceof DateTimeInterface) {
-            $value = $value->setTimezone(UTCDateTimeImmutable::getUTCTimeZone());
+            $value = $value->setTimezone(timezone: UTCDateTimeImmutable::getUTCTimeZone());
         }
 
         return parent::convertToDatabaseValue(value: $value, platform: $platform);
